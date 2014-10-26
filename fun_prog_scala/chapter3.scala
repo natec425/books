@@ -54,4 +54,7 @@ object List {
   def length[A](as: List[A]): Int = foldLeft(as, 0)((x,y) => 1+x)
   def append[A](xs: List[A], ys: List[A]): List[A] = 
     foldRight(xs, ys)(Cons(_,_))
+
+  def flatten[A](mega: List[List[A]]): List[A] =
+    foldLeft(mega, List[A]())(append(_,_))
 }
