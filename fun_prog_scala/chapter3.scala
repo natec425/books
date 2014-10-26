@@ -113,4 +113,27 @@ object Tree {
     case Leaf(_) => 1
     case Branch(left, right) => 1 + size(left) + size(right)
   }
+
+  def maximum(t: Tree[Int]): Int = t match {
+    case Leaf(d) => d
+    case Branch(left, right) => maximum(left) max maximum(right)
+  }
+
+  def depth[A](t: Tree[A]): Int = t match {
+    case Leaf(_) => 1
+    case Branch(left, right) => 1 + (depth(left) max depth(right))
+  }
+
+  def map[A, B](t: Tree[A])(f: A => B): Tree[B] = t match {
+    case Leaf(d) => Leaf(f(d))
+    case Branch(left, right) => Branch(map(left)(f), map(right)(f))
+  }
+
+  def fold[A,B,C](t: Tree[A])(l: A => B)(b: (B,B) => B): B = t match {
+    case Leaf(d) => l(d)
+    case Branch(left, right) => b(fold(left)(l)(b), fold(right)(l)(b))
+  }
+
+  def mapWithFold[A,B](t: Tree[A])(f: A => B): Tree[B] =
+    fold(t) ((x) => Leaf(f(x)):Tree[B]) ((l,r) => Branch(l, r))
 }
