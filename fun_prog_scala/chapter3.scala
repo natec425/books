@@ -20,7 +20,21 @@ object List {
     else Cons(as.head, apply(as.tail: _*))
 
   def tail[A](as: List[A]): List[A] = as match {
+    // The Nil case returns Nil because it is somewhat of a neutral value.
+    // In a sense, the empty list is present at the end of any list.
     case Nil => Nil
     case Cons(_, tl) => tl
+  }
+
+  def drop[A](as: List[A], n: Int): List[A] =
+    if (n==0) as
+    else as match {
+      case Nil => Nil
+      case Cons(_, tl) => drop(tl, n-1)
+    }
+
+  def setHead[A](new_head: A, as: List[A]): List[A] = as match {
+    case Nil => List(new_head)
+    case Cons(_, tl) => Cons(new_head, tl)
   }
 }
