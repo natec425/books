@@ -57,4 +57,14 @@ object List {
 
   def flatten[A](mega: List[List[A]]): List[A] =
     foldLeft(mega, List[A]())(append(_,_))
+
+  def incrEach(ints: List[Int]): List[Int] = ints match {
+    case Nil => Nil
+    case Cons(hd, tl) => Cons(hd+1, incrEach(tl))
+  }
+
+  def doublesToStrings(ds: List[Double]): List[String] = ds match {
+    case Nil => Nil
+    case Cons(hd, tl) => Cons(hd.toString, doublesToStrings(tl))
+  }
 }
