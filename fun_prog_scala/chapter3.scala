@@ -38,11 +38,6 @@ object List {
     case Cons(hd, tl) => Cons(hd, init(tl))
   }
 
-  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
-    case Nil => z
-    case Cons(hd, tl) => f(hd, foldRight(tl, z)(f))
-  }
-
   def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = {
     @annotation.tailrec
     def helper(as: List[A], acc: B): B = as match {
@@ -55,4 +50,7 @@ object List {
   def sum(xs: List[Int]): Int = foldLeft(xs, 0)(_+_)
   def product(xs: List[Double]): Double = foldLeft(xs, 1.0)(_*_)
   def length[A](as: List[A]): Int = foldLeft(as, 0)((x,y) => 1+x)
+
+  def foldRight[A, B](as: List[A], z:B)(f: (A, B) => B): B =
+    foldLeft(as, z)((x,y) => f(y,x))
 }
