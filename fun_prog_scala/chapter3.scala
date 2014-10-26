@@ -91,4 +91,15 @@ object List {
 
   def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List [A] =
     flatMap(as)((x) => if (f(x)) List(x) else Nil)
+
+  def hasPrefix[A](sup: List[A], sub: List[A]): Boolean = (sub, sup) match {
+    case (Nil, _) => true
+    case (_, Nil) => false
+    case (Cons(x, xs), Cons(y, ys)) => (x==y) && hasPrefix(ys, xs)
+  }
+
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+    case Nil => sub == Nil
+    case Cons(_, tl) => hasPrefix(sup,sub) || hasSubsequence(tl, sub)
+  }
 }
