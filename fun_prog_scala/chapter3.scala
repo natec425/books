@@ -82,4 +82,13 @@ object List {
     case Nil => Nil
     case Cons(hd,tl) => append(f(hd),flatMap(tl)(f))
   }
+
+  def zipWith[A,B,C](as: List[A])(bs: List[B])(f: (A,B) => C): List[C] =
+    (as, bs) match {
+      case (Cons(a, as), Cons(b,bs)) => Cons(f(a,b), zipWith(as)(bs)(f))
+      case _ => Nil
+    }
+
+  def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List [A] =
+    flatMap(as)((x) => if (f(x)) List(x) else Nil)
 }
