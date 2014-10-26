@@ -67,4 +67,14 @@ object List {
     case Nil => Nil
     case Cons(hd, tl) => Cons(hd.toString, doublesToStrings(tl))
   }
+
+  def map[A,B](as: List[A])(f: A => B): List[B] = as match {
+    case Nil => Nil
+    case Cons(hd, tl) => Cons(f(hd), map(tl)(f))
+  }
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = as match {
+    case Nil => Nil
+    case Cons(hd, tl) => if (f(hd)) Cons(hd, filter(tl)(f)) else filter(tl)(f)
+  }
 }
