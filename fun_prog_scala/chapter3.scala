@@ -1,4 +1,3 @@
-// Code taken from Listing 3.1
 sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
@@ -44,13 +43,15 @@ object List {
     case Cons(hd, tl) => foldLeft(tl, f(z, hd))(f)
   }
 
+  def reverse[A](as: List[A]): List[A] =
+    foldLeft(as, List[A]())((z,a) => Cons(a, z))
+
   def foldRight[A, B](as: List[A], z:B)(f: (A, B) => B): B =
-    foldLeft(as, z)((x,y) => f(y,x))
+    foldLeft(reverse(as), z)((b,a) => f(a,b))
 
   def sum(xs: List[Int]): Int = foldLeft(xs, 0)(_+_)
   def product(xs: List[Double]): Double = foldLeft(xs, 1.0)(_*_)
   def length[A](as: List[A]): Int = foldLeft(as, 0)((x,y) => 1+x)
-  def reverse[A](as: List[A]): List[A] = foldRight(as, List[A]())(Cons(_,_))
   def append[A](xs: List[A], ys: List[A]): List[A] = 
-    foldRight(reverse(xs), ys)(Cons(_,_))
+    foldRight(xs, ys)(Cons(_,_))
 }
