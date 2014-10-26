@@ -77,4 +77,9 @@ object List {
     case Nil => Nil
     case Cons(hd, tl) => if (f(hd)) Cons(hd, filter(tl)(f)) else filter(tl)(f)
   }
+
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as match {
+    case Nil => Nil
+    case Cons(hd,tl) => append(f(hd),flatMap(tl)(f))
+  }
 }
