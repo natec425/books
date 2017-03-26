@@ -25,6 +25,19 @@ object Chapter4 {
       def filter(f: Nothing => Boolean) = None
     }
 
+    def Try[A](a: => A): Option[A] =
+      try Some(a)
+      catch { case e : Exception => None }
+
+    object Option {
+      def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
+      def map2[A,B,C](oa: Option[A])(ob: Option[B])(f: (A,B) => C): Option[C] =
+        (oa, ob) match {
+            case (Some(a), Some(b)) => Some(f(a, b))
+            case _ => None
+        }
+    }
+
     def mean(xs: Seq[Double]): Option[Double] =
       if (xs.isEmpty) None
       else Some(xs.sum / xs.length)
