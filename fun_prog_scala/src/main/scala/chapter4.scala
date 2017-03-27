@@ -38,9 +38,12 @@ object Chapter4 {
       def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
 
       def sequence[A](a: List[Option[A]]): Option[List[A]] =
+        traverse(a)(identity)
+
+      def traverse[A,B](a: List[A])(f: A => Option[B]): Option[List[B]] =
         a match {
           case List() => Some(List())
-          case h :: t => h flatMap (a => sequence(t) map (a::_))
+          case h :: t => f(h) flatMap (a => traverse(t)(f) map (a::_))
         }
     }
 
