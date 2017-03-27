@@ -7,6 +7,9 @@ object Chapter4 {
       def getOrElse[B >: A](default: => B): B
       def orElse[B >: A](ob: => Option[B]): Option[B]
       def filter(f: A => Boolean): Option[A]
+
+      def map2[B, C](ob: Option[B])(f: (A,B) => C): Option[C] =
+        this flatMap (a => ob map (b => f(a, b)))
     }
 
     case class Some[+A](get: A) extends Option[A] {
@@ -33,11 +36,7 @@ object Chapter4 {
 
     object Option {
       def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
-      def map2[A,B,C](oa: Option[A])(ob: Option[B])(f: (A,B) => C): Option[C] =
-        (oa, ob) match {
-            case (Some(a), Some(b)) => Some(f(a, b))
-            case _ => None
-        }
+
       def sequence[A](a: List[Option[A]]): Option[List[A]] =
         a match {
           case List() => Some(List())
