@@ -1,3 +1,5 @@
+import scala.collection.immutable.List
+
 object Chapter4 {
     sealed trait Option[+A] {
       def map[B](f: A => B): Option[B]
@@ -35,6 +37,11 @@ object Chapter4 {
         (oa, ob) match {
             case (Some(a), Some(b)) => Some(f(a, b))
             case _ => None
+        }
+      def sequence[A](a: List[Option[A]]): Option[List[A]] =
+        a match {
+          case List() => Some(List())
+          case h :: t => h flatMap (a => sequence(t) map (a::_))
         }
     }
 
